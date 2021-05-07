@@ -37,7 +37,7 @@ export default {
   },
   watch: {
     $route (to) {
-      this.activeIndex = to.path;
+      this.activeIndex = to.name;
     }
   },
   methods: {
