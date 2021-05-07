@@ -3,19 +3,19 @@
     <el-container>
       <el-header>
         <el-menu :router="true" :default-active="activeIndex" mode="horizontal">
-          <el-menu-item v-if="!tokenAuthentication" index="login" :route="{ name: 'login' }">
+          <el-menu-item v-if="tokenAuthentication === null" index="login" :route="{ name: 'login' }">
             <template slot="title">
               <i class="el-icon-user"></i>
               <span>Login</span>
             </template>
           </el-menu-item>
-          <el-menu-item v-if="tokenAuthentication" index="users" :route="{ name: 'users' }">
+          <el-menu-item v-if="tokenAuthentication !== null" index="users" :route="{ name: 'users' }">
             <template slot="title">
               <i class="el-icon-tickets"></i>
               <span>Users list</span>
             </template>
           </el-menu-item>
-          <el-menu-item v-if="tokenAuthentication" index="logout" @click="logout">
+          <el-menu-item v-if="tokenAuthentication !== null" index="logout" @click="logout">
             <template slot="title">
               <i class="el-icon-switch-button"></i>
               <span>Logout</span>

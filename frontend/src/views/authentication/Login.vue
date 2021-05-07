@@ -10,7 +10,7 @@
         </el-alert>
 
         <el-form :model="userForm" style="margin-top: 12px;">
-          <el-form-item prop="usuario">
+          <el-form-item prop="email">
             <el-input
                 v-model="userForm.email"
                 placeholder="Email"
@@ -24,6 +24,7 @@
           <el-form-item prop="password">
             <el-input
                 v-model="userForm.password"
+                type="password"
                 placeholder="Password"
                 name="password"
                 tabindex="2"
@@ -35,7 +36,7 @@
           <el-button
               :loading="loading"
               type="primary"
-              style="width:100%;margin-bottom:30px;"
+              style="width:100%;"
               @click.native.prevent="login"
           >
             Login
