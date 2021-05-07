@@ -3,19 +3,19 @@
     <el-container>
       <el-header>
         <el-menu :router="true" :default-active="activeIndex" mode="horizontal">
-          <el-menu-item index="login" :route="{ name: 'login' }">
+          <el-menu-item v-if="!tokenAuthentication" index="login" :route="{ name: 'login' }">
             <template slot="title">
               <i class="el-icon-user"></i>
               <span>Login</span>
             </template>
           </el-menu-item>
-          <el-menu-item index="users" :route="{ name: 'users' }">
+          <el-menu-item v-if="tokenAuthentication" index="users" :route="{ name: 'users' }">
             <template slot="title">
               <i class="el-icon-tickets"></i>
               <span>Users list</span>
             </template>
           </el-menu-item>
-          <el-menu-item index="logout">
+          <el-menu-item v-if="tokenAuthentication" index="logout" @click="logout">
             <template slot="title">
               <i class="el-icon-switch-button"></i>
               <span>Logout</span>
@@ -29,11 +29,19 @@
 </template>
 
 <script>
+
+import { mapGetters } from 'vuex'
+
 export default {
   data() {
     return {
       activeIndex: 'login'
     }
+  },
+  computed: {
+    ...mapGetters({
+      tokenAuthentication: 'tokenAuthentication'
+    })
   },
   watch: {
     $route (to) {
@@ -41,7 +49,14 @@ export default {
     }
   },
   methods: {
-
+    async logout() {
+      try {
+        await this.$store.dispatch('logout');
+        await this.$router.push({ name: 'login' })
+      } catch (error) {
+        this.error = error.response.data.message;
+      }
+    }
   }
 
 }

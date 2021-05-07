@@ -26,9 +26,11 @@ class AuthenticationController extends Controller
 
     public function logout()
     {
+        auth()->user()->tokens()->delete();
+
         return $this->success(
             'The session has been successfully closed',
-            auth()->user()->currentAccessToken()->delete()
+            null
         );
     }
 }
