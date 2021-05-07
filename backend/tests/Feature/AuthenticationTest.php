@@ -21,7 +21,7 @@ class AuthenticationTest extends TestCase
         $password = 'test';
 
         $user = User::factory()->create([
-            'password' => $password
+            'password' => bcrypt($password)
         ]);
 
         $response = $this->json('POST', '/api/v1/login', [
