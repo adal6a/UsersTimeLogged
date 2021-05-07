@@ -23,4 +23,12 @@ class AuthenticationController extends Controller
             return $this->error('Unable to authenticate');
         }
     }
+
+    public function logout()
+    {
+        return $this->success(
+            'The session has been successfully closed',
+            auth()->user()->currentAccessToken()->delete()
+        );
+    }
 }
