@@ -8,7 +8,7 @@
             style="width: 100%;"
             placeholder="Pick a date"
             value-format="yyyy-MM-dd"
-            @change="getUsers"
+            @change="filterUsers"
         >
         </el-date-picker>
       </el-col>
@@ -18,7 +18,7 @@
             placeholder="Search by name or email"
             prefix-icon="el-icon-search"
             v-model="filter.searchString"
-            @input="getUsers"
+            @input="filterUsers"
         >
         </el-input>
       </el-col>
@@ -118,6 +118,10 @@ export default {
     handlePaginate(page) {
       this.pagination.currentPage = page;
       this.filter.page = page;
+      this.getUsers();
+    },
+    filterUsers() {
+      this.filter.page = 1;
       this.getUsers();
     },
     sortByDateOrTime(data) {
