@@ -16,8 +16,8 @@ class UserRepository
     public function usersLoggedTime(
         $date = '',
         $searchString = '',
-        $orderByDate = 'asc',
-        $orderByTime = 'asc'
+        $orderByDate = '',
+        $orderByTime = ''
     )
     {
         $limit = 10;
@@ -27,9 +27,10 @@ class UserRepository
                 return $query->whereDate('loggedtime.last_active', $date);
             })
             ->when($searchString, static function ($query) use ($limit, $searchString) {
-                return $query->where('name', 'LIKE', '%' . $searchString . '%')
-                    ->orWhere('email', 'LIKE', '%' . $searchString . '%')
-                    ->limit($limit);
+                return $query->where([
+                    ['name', 'LIKE', '%' . $searchString . '%'],
+                    ['email', 'LIKE', '%' . $searchString . '%']
+                ])->limit($limit);
             })
             ->when($orderByDate, static function ($query) use ($orderByDate) {
                 return $query->orderBy('logged_date', $orderByDate);
