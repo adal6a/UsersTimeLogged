@@ -30,6 +30,7 @@
                 tabindex="2"
                 autocomplete="on"
                 @keyup.enter.native="login"
+                show-password
             />
           </el-form-item>
 

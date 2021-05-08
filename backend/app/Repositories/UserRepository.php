@@ -24,7 +24,7 @@ class UserRepository
 
         return $this->model::usersLoggedTime()
             ->when($date, static function ($query) use ($date) {
-                return $query->whereDate('logged_date', $date);
+                return $query->whereDate('loggedtime.last_active', $date);
             })
             ->when($searchString, static function ($query) use ($limit, $searchString) {
                 return $query->where('name', 'LIKE', '%' . $searchString . '%')
