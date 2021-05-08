@@ -13,10 +13,20 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory()->create([
-            'name' => 'adal',
-            'email' => 'adalgarcia17@gmail.com',
-            'password' => bcrypt('adal')
-        ]);
+        $users = [
+            [
+                'name' => 'adal',
+                'email' => 'adalgarcia17@gmail.com',
+                'password' => bcrypt('adal')
+            ],
+            [
+                'name' => 'julio',
+                'email' => 'juliosolai@gmail.com',
+                'password' => bcrypt('julio')
+            ]
+        ];
+
+        foreach ($users as $user)
+            \App\Models\User::factory()->create($user);
     }
 }
