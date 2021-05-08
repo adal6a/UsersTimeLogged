@@ -9,10 +9,10 @@
             show-icon>
         </el-alert>
 
-        <el-form :model="userForm" style="margin-top: 12px;">
+        <el-form ref="loginForm" :model="loginForm" :rules="loginFormRules" style="margin-top: 12px;">
           <el-form-item prop="email">
             <el-input
-                v-model="userForm.email"
+                v-model="loginForm.email"
                 placeholder="Email"
                 name="email"
                 type="text"
@@ -23,13 +23,13 @@
 
           <el-form-item prop="password">
             <el-input
-                v-model="userForm.password"
+                v-model="loginForm.password"
                 type="password"
                 placeholder="Password"
                 name="password"
                 tabindex="2"
                 autocomplete="on"
-                @keyup.enter.native="login"
+                @keyup.enter.native="validateForm"
                 show-password
             />
           </el-form-item>
@@ -38,7 +38,7 @@
               :loading="loading"
               type="primary"
               style="width:100%;"
-              @click.native.prevent="login"
+              @click.native.prevent="validateForm"
           >
             Login
           </el-button>
@@ -55,9 +55,17 @@ export default {
 
   data() {
     return {
-      userForm: {
+      loginForm: {
         email: '',
         password: ''
+      },
+      loginFormRules: {
+        email: [
+          { required: true, message: 'Email is required', trigger: 'blur' },
+        ],
+        password: [
+          { required: true, message: 'Password is required', trigger: 'blur' }
+        ],
       },
       loading: false,
       error: null
@@ -65,13 +73,22 @@ export default {
   },
 
   methods: {
+    validateForm() {
+      this.$refs['loginForm'].validate((valid) => {
+        if (valid) {
+          this.login();
+        } else {
+          return false
+        }
+      })
+    },
     async login() {
       this.error = null;
 
       try {
         this.loading = true;
 
-        await this.$store.dispatch('login', this.userForm);
+        await this.$store.dispatch('login', this.loginForm);
         this.loading = false;
         this.error = null;
 
