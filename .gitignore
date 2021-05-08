@@ -15,7 +15,7 @@ backend/npm-debug.log
 backend/yarn-error.log
 backend/.idea
 backend/.vscode
-backend/database/seeders/sql
+backend/database/seeders/sql/*.sql
 
 frontend/.DS_Store
 frontend/node_modules/
