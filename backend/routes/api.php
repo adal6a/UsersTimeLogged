@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,5 +20,9 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('logout', [AuthenticationController::class, 'logout']);
+
+        Route::get('users', [UserController::class, 'users_logged_time']);
     });
 });
+
+
