@@ -1,12 +1,39 @@
 <template>
   <div>
     <el-row :gutter="24" type="flex" justify="center">
+      <el-col :span="6">
+        <el-date-picker
+            v-model="filter.date"
+            type="date"
+            style="width: 100%;"
+            placeholder="Pick a date"
+            value-format="yyyy-MM-dd"
+            @change="getUsers"
+        >
+        </el-date-picker>
+      </el-col>
+      <el-col :span="14">
+        <el-input
+            clearable
+            placeholder="Search by name or email"
+            prefix-icon="el-icon-search"
+            v-model="filter.searchString"
+            @input="getUsers"
+        >
+        </el-input>
+      </el-col>
+    </el-row>
+
+    <el-row :gutter="24" type="flex" justify="center" style="margin-top: 12px;">
       <el-col :span="20">
         <el-table
+            empty-text="No data found"
             v-loading="loading"
             border
             :data="users"
-            style="width: 100%">
+            style="width: 100%"
+            @sort-change="sortByDateOrTime"
+        >
           <el-table-column
               prop="name"
               label="Name">
@@ -20,10 +47,12 @@
               label="Mobile">
           </el-table-column>
           <el-table-column
+              sortable
               prop="logged_date"
               label="Date">
           </el-table-column>
           <el-table-column
+              sortable
               prop="total_logged_time"
               label="Logged time">
           </el-table-column>
@@ -60,6 +89,13 @@ export default {
         perPage: 0,
         totalItems: 0
       },
+      filter: {
+        page: 1,
+        date: '',
+        searchString: '',
+        orderByDate: '',
+        orderByTime: ''
+      },
       users: []
     }
   },
@@ -70,9 +106,7 @@ export default {
     async getUsers() {
       this.loading = true;
 
-      let { data } = await user.usersLoggedTime({
-        page: this.pagination.currentPage
-      });
+      let { data } = await user.usersLoggedTime(this.filter);
 
       this.users = data.data.data;
 
@@ -83,6 +117,21 @@ export default {
     },
     handlePaginate(page) {
       this.pagination.currentPage = page;
+      this.filter.page = page;
+      this.getUsers();
+    },
+    sortByDateOrTime(data) {
+      this.filter.orderByDate = '';
+      this.filter.orderByTime = '';
+
+      const order = data.order === 'ascending' ? 'asc' : 'desc';
+
+      if (data.prop === 'total_logged_time') {
+        this.filter.orderByTime = order;
+      } else {
+        this.filter.orderByDate = order;
+      }
+
       this.getUsers();
     }
   }
